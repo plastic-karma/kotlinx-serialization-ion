@@ -1,0 +1,28 @@
+package de.plastickarma.kotlinx.serialization.format.ion
+
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.serializer
+import java.io.BufferedOutputStream
+import java.io.ByteArrayOutputStream
+import java.nio.charset.Charset
+
+/**
+ * Main entry point into ION serialization/deserialization.
+ */
+class Ion {
+    companion object {
+
+        /**
+         * Writes the given value into an ION string.
+         */
+        @ExperimentalSerializationApi
+        inline fun <reified T> encodeToString(value: T): String {
+            val outputBuffer = ByteArrayOutputStream()
+            BufferedOutputStream(outputBuffer).use {
+                val encoder = IonEncoder(it)
+                encoder.encodeSerializableValue(serializer(), value)
+            }
+            return outputBuffer.toString(Charset.forName("UTF-8"))
+        }
+    }
+}
