@@ -32,6 +32,10 @@ class IonDecoder(value: String) : AbstractDecoder() {
                 ion.stepIn()
                 ContainerTypeDecoder(serializersModule, ion, this)
             }
+            StructureKind.MAP -> {
+                ion.stepIn()
+                MapIonDecoder(serializersModule, ion, this)
+            }
             else -> super.beginStructure(descriptor)
         }
     }

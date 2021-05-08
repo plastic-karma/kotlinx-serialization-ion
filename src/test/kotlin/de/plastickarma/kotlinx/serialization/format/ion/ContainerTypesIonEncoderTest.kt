@@ -29,6 +29,14 @@ class ContainerTypesIonEncoderTest : FreeSpec({
         ) shouldBeIon """
             {A:1,B:2}
         """
+        Ion.encodeToString(
+            mapOf(
+                1 to "A",
+                2 to "B"
+            )
+        ) shouldBeIon """
+            {'1':"A",'2':"B"}
+        """
     }
 
     "nested containers are getting serliazed" {
