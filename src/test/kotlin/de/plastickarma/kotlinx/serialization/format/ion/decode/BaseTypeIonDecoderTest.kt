@@ -41,4 +41,11 @@ class BaseTypeIonDecoderTest : FreeSpec({
         Ion.decodeFromString<Double?>("null") shouldBe null
         Ion.decodeFromString<Float?>("null") shouldBe null
     }
+
+    "optionals are deserialized" {
+        Ion.decodeFromString<String?>("\"hello\"") shouldBe "hello"
+        Ion.decodeFromString<Int?>("1") shouldBe 1
+        Ion.decodeFromString<Double?>("1.0") shouldBe 1.0
+        Ion.decodeFromString<Float?>("2.0") shouldBe 2.0f
+    }
 })

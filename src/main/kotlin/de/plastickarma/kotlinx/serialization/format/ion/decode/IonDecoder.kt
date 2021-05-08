@@ -24,6 +24,8 @@ class IonDecoder(value: String) : AbstractDecoder() {
         error("decodeElementIndex not supported for IonDecoder")
     }
 
+    private var afterNullCheck: Boolean = false
+
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         return when (descriptor.kind) {
             StructureKind.LIST -> {
@@ -39,7 +41,10 @@ class IonDecoder(value: String) : AbstractDecoder() {
     }
 
     override fun <T> decodeSerializableValue(deserializer: DeserializationStrategy<T>): T {
-        ion.next()
+        if (!afterNullCheck) {
+            ion.next()
+            afterNullCheck = false
+        }
         return super.decodeSerializableValue(deserializer)
     }
 
@@ -64,6 +69,8 @@ class IonDecoder(value: String) : AbstractDecoder() {
     }
 
     override fun decodeNotNullMark(): Boolean {
-        return !ion.isNullValue
+        val isNull = ion.isNullValue
+        afterNullCheck = true
+        return !isNull
     }
 }
