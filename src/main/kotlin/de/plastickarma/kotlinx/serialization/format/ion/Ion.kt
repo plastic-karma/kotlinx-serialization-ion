@@ -1,5 +1,6 @@
 package de.plastickarma.kotlinx.serialization.format.ion
 
+import de.plastickarma.kotlinx.serialization.format.ion.encode.IonEncoder
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.serializer
 import java.io.BufferedOutputStream

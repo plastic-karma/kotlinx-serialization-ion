@@ -1,4 +1,4 @@
-package de.plastickarma.kotlinx.serialization.format.ion
+package de.plastickarma.kotlinx.serialization.format.ion.encode
 
 import com.amazon.ion.IonType
 import com.amazon.ion.IonWriter
