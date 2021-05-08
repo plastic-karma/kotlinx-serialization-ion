@@ -23,7 +23,6 @@ class ContainerTypeDecoder(
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
         next = ion.next()
         return if (next == null) {
-            elementIndex = 0
             CompositeDecoder.DECODE_DONE
         } else {
             elementIndex++
