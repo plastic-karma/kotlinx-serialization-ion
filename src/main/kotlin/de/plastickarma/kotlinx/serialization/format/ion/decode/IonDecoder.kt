@@ -1,9 +1,12 @@
 package de.plastickarma.kotlinx.serialization.format.ion.decode
 
 import com.amazon.ion.system.IonSystemBuilder
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.StructureKind
 import kotlinx.serialization.encoding.AbstractDecoder
+import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
 
@@ -18,26 +21,41 @@ class IonDecoder(value: String) : AbstractDecoder() {
     override val serializersModule: SerializersModule = EmptySerializersModule
 
     override fun decodeElementIndex(descriptor: SerialDescriptor): Int {
-        TODO("Not yet implemented")
+        error("decodeElementIndex not supported for IonDecoder")
+    }
+
+    override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
+        return when (descriptor.kind) {
+            StructureKind.LIST -> {
+                ion.stepIn()
+                ContainerTypeDecoder(serializersModule, ion, this)
+            }
+            else -> super.beginStructure(descriptor)
+        }
+    }
+
+    override fun endStructure(descriptor: SerialDescriptor) {
+        ion.stepOut()
+    }
+
+    override fun <T> decodeSerializableValue(deserializer: DeserializationStrategy<T>): T {
+        ion.next()
+        return super.decodeSerializableValue(deserializer)
     }
 
     override fun decodeString(): String {
-        ion.next()
         return ion.stringValue()
     }
 
     override fun decodeInt(): Int {
-        ion.next()
         return ion.intValue()
     }
 
     override fun decodeFloat(): Float {
-        ion.next()
         return ion.doubleValue().toFloat()
     }
 
     override fun decodeDouble(): Double {
-        ion.next()
         return ion.doubleValue()
     }
 
@@ -46,7 +64,6 @@ class IonDecoder(value: String) : AbstractDecoder() {
     }
 
     override fun decodeNotNullMark(): Boolean {
-        ion.next()
         return !ion.isNullValue
     }
 }

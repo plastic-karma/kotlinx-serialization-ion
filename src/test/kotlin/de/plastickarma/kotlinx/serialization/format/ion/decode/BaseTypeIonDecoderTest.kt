@@ -3,7 +3,9 @@ package de.plastickarma.kotlinx.serialization.format.ion.decode
 import de.plastickarma.kotlinx.serialization.format.ion.Ion
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalSerializationApi
 class BaseTypeIonDecoderTest : FreeSpec({
     "strings are deserialized" - {
         Ion.decodeFromString<String>("\"Hello\"") shouldBe "Hello"

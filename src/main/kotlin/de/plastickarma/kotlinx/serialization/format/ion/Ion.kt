@@ -27,6 +27,9 @@ class Ion {
             return outputBuffer.toString(Charset.forName("UTF-8"))
         }
 
+        /**
+         * Reads the given ION string into a Kotlin object
+         */
         inline fun <reified T> decodeFromString(value: String): T {
             val decoder = IonDecoder(value)
             return decoder.decodeSerializableValue(serializer())
