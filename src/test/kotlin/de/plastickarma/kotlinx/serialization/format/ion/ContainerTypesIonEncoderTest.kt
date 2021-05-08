@@ -40,5 +40,14 @@ class ContainerTypesIonEncoderTest : FreeSpec({
         ) shouldBeIon """
             [{A:1,B:2},{C:3,D:4}]
         """
+
+        Ion.encodeToString(
+            mapOf(
+                "key1" to listOf(1, 2, 3),
+                "key2" to listOf(4, 5, 6),
+            )
+        ) shouldBeIon """
+            {key1:[1,2,3],key2:[4,5,6]}
+        """
     }
 })
