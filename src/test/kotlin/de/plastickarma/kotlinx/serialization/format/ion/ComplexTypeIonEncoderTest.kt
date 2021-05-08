@@ -1,6 +1,7 @@
 package de.plastickarma.kotlinx.serialization.format.ion
 
 import de.plastickarma.kotlinx.serialization.format.ion.data.NestedDataHolder
+import de.plastickarma.kotlinx.serialization.format.ion.data.NestedDataHolderWithOptional
 import de.plastickarma.kotlinx.serialization.format.ion.data.PrimitiveDataHolder
 import de.plastickarma.kotlinx.serialization.format.ion.data.Status
 import io.kotest.core.spec.style.FreeSpec
@@ -55,6 +56,38 @@ class ComplexTypeIonEncoderTest : FreeSpec({
                     key2:{str:"HelloKey2",c:"c",i:1,l:100000000001,f:1234.510009765625e0,d:-0.12312313e0,s:12,b:100,bl:true,status:"DELETED"}
                 }
             }
+        """
+    }
+
+    "complex types with optional properties are serialized" {
+        Ion.encodeToString(
+            NestedDataHolderWithOptional(
+                primitiveDataHolder = null,
+                listOfPrimitiveDataHolder = null,
+                mapOfPrimitiveDataHolder = null
+            )
+        ) shouldBeIon """{primitiveDataHolder:null,listOfPrimitiveDataHolder:null,mapOfPrimitiveDataHolder:null}"""
+
+        Ion.encodeToString(
+            NestedDataHolderWithOptional(
+                primitiveDataHolder = null,
+                listOfPrimitiveDataHolder = listOf(
+                    null,
+                    PrimitiveDataHolder(str = "Hello1", 'c', 1, 100000000001, 1234.51f, -0.12312313, 12, 100, true, status = Status.UPDATED),
+                    null
+                ),
+                mapOfPrimitiveDataHolder = null
+            )
+        ) shouldBeIon """
+            {
+                primitiveDataHolder:null,
+                listOfPrimitiveDataHolder:[
+                    null,
+                    {str:"Hello1",c:"c",i:1,l:100000000001,f:1234.510009765625e0,d:-0.12312313e0,s:12,b:100,bl:true,status:"UPDATED"},
+                    null
+                ],
+                mapOfPrimitiveDataHolder:null
+                }
         """
     }
 })

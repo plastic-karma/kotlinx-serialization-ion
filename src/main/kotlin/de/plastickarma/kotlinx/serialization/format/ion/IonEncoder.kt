@@ -18,7 +18,7 @@ import java.io.OutputStream
 @ExperimentalSerializationApi
 class IonEncoder(outputStream: OutputStream) : AbstractEncoder() {
 
-    private val textWriterBuilder: IonWriter = IonTextWriterBuilder
+    private val ion: IonWriter = IonTextWriterBuilder
         .standard()
         .build(outputStream)
 
@@ -26,44 +26,44 @@ class IonEncoder(outputStream: OutputStream) : AbstractEncoder() {
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
         when (descriptor.kind) {
-            StructureKind.LIST -> textWriterBuilder.stepIn(IonType.LIST)
+            StructureKind.LIST -> ion.stepIn(IonType.LIST)
             StructureKind.CLASS -> {
-                textWriterBuilder.stepIn(IonType.STRUCT)
-                return ComplexTypeEncoder(serializersModule, textWriterBuilder, this)
+                ion.stepIn(IonType.STRUCT)
+                return ComplexTypeEncoder(serializersModule, ion, this)
             }
             StructureKind.MAP -> {
-                textWriterBuilder.stepIn(IonType.STRUCT)
-                return MapIonEncoder(serializersModule, textWriterBuilder, this)
+                ion.stepIn(IonType.STRUCT)
+                return MapIonEncoder(serializersModule, ion, this)
             }
-            else -> textWriterBuilder.stepIn(IonType.STRUCT)
+            else -> ion.stepIn(IonType.STRUCT)
         }
         return this
     }
 
     override fun endStructure(descriptor: SerialDescriptor) {
-        textWriterBuilder.stepOut()
+        ion.stepOut()
     }
 
     override fun encodeElement(descriptor: SerialDescriptor, index: Int): Boolean {
         return true
     }
 
-    override fun encodeBoolean(value: Boolean): Unit = textWriterBuilder.writeBool(value)
-    override fun encodeByte(value: Byte): Unit = textWriterBuilder.writeInt(value.toLong())
-    override fun encodeShort(value: Short): Unit = textWriterBuilder.writeInt(value.toLong())
-    override fun encodeInt(value: Int): Unit = textWriterBuilder.writeInt(value.toLong())
-    override fun encodeLong(value: Long): Unit = textWriterBuilder.writeInt(value)
-    override fun encodeFloat(value: Float): Unit = textWriterBuilder.writeFloat(value.toDouble())
-    override fun encodeDouble(value: Double): Unit = textWriterBuilder.writeFloat(value)
-    override fun encodeChar(value: Char): Unit = textWriterBuilder.writeString(value.toString())
-    override fun encodeString(value: String): Unit = textWriterBuilder.writeString(value)
+    override fun encodeBoolean(value: Boolean): Unit = ion.writeBool(value)
+    override fun encodeByte(value: Byte): Unit = ion.writeInt(value.toLong())
+    override fun encodeShort(value: Short): Unit = ion.writeInt(value.toLong())
+    override fun encodeInt(value: Int): Unit = ion.writeInt(value.toLong())
+    override fun encodeLong(value: Long): Unit = ion.writeInt(value)
+    override fun encodeFloat(value: Float): Unit = ion.writeFloat(value.toDouble())
+    override fun encodeDouble(value: Double): Unit = ion.writeFloat(value)
+    override fun encodeChar(value: Char): Unit = ion.writeString(value.toString())
+    override fun encodeString(value: String): Unit = ion.writeString(value)
     override fun encodeEnum(enumDescriptor: SerialDescriptor, index: Int) = encodeString(enumDescriptor.getElementName(index))
 
     override fun encodeValue(value: Any) {
-        textWriterBuilder.writeString(value.toString())
+        ion.writeString(value.toString())
     }
 
     override fun encodeNull() {
-        textWriterBuilder.writeNull()
+        ion.writeNull()
     }
 }

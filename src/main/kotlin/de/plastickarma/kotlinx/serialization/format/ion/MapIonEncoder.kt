@@ -14,7 +14,7 @@ import kotlinx.serialization.modules.SerializersModule
 @ExperimentalSerializationApi
 class MapIonEncoder(
     override val serializersModule: SerializersModule,
-    private val textWriterBuilder: IonWriter,
+    private val ion: IonWriter,
     private val baseEncoder: Encoder
 ) : AbstractEncoder() {
 
@@ -22,7 +22,7 @@ class MapIonEncoder(
 
     override fun <T> encodeSerializableValue(serializer: SerializationStrategy<T>, value: T) {
         isKey = if (isKey) {
-            textWriterBuilder.setFieldName(value.toString())
+            ion.setFieldName(value.toString())
             false
         } else {
             serializer.serialize(baseEncoder, value)
@@ -31,6 +31,6 @@ class MapIonEncoder(
     }
 
     override fun endStructure(descriptor: SerialDescriptor) {
-        textWriterBuilder.stepOut()
+        ion.stepOut()
     }
 }
