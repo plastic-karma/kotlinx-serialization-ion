@@ -1,9 +1,9 @@
 package de.plastickarma.kotlinx.serialization.format.ion
 
+import de.plastickarma.kotlinx.serialization.format.ion.data.ListElement
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.Serializable
 
 @ExperimentalSerializationApi
 class ContainerTypesIonEncoderTest : FreeSpec({
@@ -14,9 +14,7 @@ class ContainerTypesIonEncoderTest : FreeSpec({
     }
 
     "lists with objects are serialized" {
-        @Serializable
-        data class InsideList(val id: String)
-        Ion.encodeToString(listOf(InsideList("A"), InsideList("B"))) shouldBe "[{id:\"A\"},{id:\"B\"}]"
+        Ion.encodeToString(listOf(ListElement("A"), ListElement("B"))) shouldBe "[{id:\"A\"},{id:\"B\"}]"
     }
 
     "maps are serialized" {
