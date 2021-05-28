@@ -6,7 +6,6 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.serializer
 import java.io.BufferedOutputStream
 import java.io.ByteArrayOutputStream
-import java.nio.charset.Charset
 
 /**
  * Main entry point into ION serialization/deserialization.
@@ -25,7 +24,7 @@ class Ion private constructor() {
                 val encoder = IonEncoder(it)
                 encoder.encodeSerializableValue(serializer(), value)
             }
-            return outputBuffer.toString(Charset.forName("UTF-8"))
+            return outputBuffer.toString(Charsets.UTF_8.name())
         }
 
         /**
