@@ -63,7 +63,7 @@ class ComplexTypeEncoder(
     }
 
     override fun encodeInlineElement(descriptor: SerialDescriptor, index: Int): Encoder {
-        TODO("Not yet implemented")
+        return baseEncoder
     }
 
     override fun <T : Any> encodeNullableSerializableElement(

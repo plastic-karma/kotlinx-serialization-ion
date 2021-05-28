@@ -1,5 +1,7 @@
 package de.plastickarma.kotlinx.serialization.format.ion
 
+import de.plastickarma.kotlinx.serialization.format.ion.data.InlineElementHolder
+import de.plastickarma.kotlinx.serialization.format.ion.data.MyInt
 import de.plastickarma.kotlinx.serialization.format.ion.data.NestedDataHolder
 import de.plastickarma.kotlinx.serialization.format.ion.data.NestedDataHolderWithOptional
 import de.plastickarma.kotlinx.serialization.format.ion.data.PrimitiveDataHolder
@@ -117,6 +119,16 @@ class ComplexTypeIonEncoderTest : FreeSpec({
                 ],
                 mapOfPrimitiveDataHolder:null
                 }
+        """
+    }
+
+    "inline classes are serialized" {
+        Ion.encodeToString(MyInt(42)) shouldBeIon "42"
+    }
+
+    "nested inline classes are serialized" {
+        Ion.encodeToString(InlineElementHolder(MyInt(43), "hello")) shouldBeIon """
+            { myInt:43,id:"hello"}
         """
     }
 })
