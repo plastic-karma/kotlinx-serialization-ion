@@ -12,7 +12,8 @@ import java.nio.charset.Charset
  * Main entry point into ION serialization/deserialization.
  */
 @ExperimentalSerializationApi
-class Ion {
+class Ion private constructor() {
+
     companion object {
 
         /**

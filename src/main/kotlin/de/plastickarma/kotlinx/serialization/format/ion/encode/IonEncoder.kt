@@ -25,19 +25,24 @@ class IonEncoder(outputStream: OutputStream) : AbstractEncoder() {
     override val serializersModule: SerializersModule = EmptySerializersModule
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeEncoder {
-        when (descriptor.kind) {
-            StructureKind.LIST -> ion.stepIn(IonType.LIST)
+        return when (descriptor.kind) {
+            StructureKind.LIST -> {
+                ion.stepIn(IonType.LIST)
+                this
+            }
             StructureKind.CLASS -> {
                 ion.stepIn(IonType.STRUCT)
-                return ComplexTypeEncoder(serializersModule, ion, this)
+                ComplexTypeEncoder(serializersModule, ion, this)
             }
             StructureKind.MAP -> {
                 ion.stepIn(IonType.STRUCT)
-                return MapIonEncoder(serializersModule, ion, this)
+                MapIonEncoder(serializersModule, ion, this)
             }
-            else -> ion.stepIn(IonType.STRUCT)
+            else -> {
+                ion.stepIn(IonType.STRUCT)
+                this
+            }
         }
-        return this
     }
 
     override fun endStructure(descriptor: SerialDescriptor) {
@@ -57,7 +62,8 @@ class IonEncoder(outputStream: OutputStream) : AbstractEncoder() {
     override fun encodeDouble(value: Double): Unit = ion.writeFloat(value)
     override fun encodeChar(value: Char): Unit = ion.writeString(value.toString())
     override fun encodeString(value: String): Unit = ion.writeString(value)
-    override fun encodeEnum(enumDescriptor: SerialDescriptor, index: Int) = encodeString(enumDescriptor.getElementName(index))
+    override fun encodeEnum(enumDescriptor: SerialDescriptor, index: Int) =
+        encodeString(enumDescriptor.getElementName(index))
 
     override fun encodeValue(value: Any) {
         ion.writeString(value.toString())

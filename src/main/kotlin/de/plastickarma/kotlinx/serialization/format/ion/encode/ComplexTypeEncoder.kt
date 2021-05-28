@@ -66,7 +66,12 @@ class ComplexTypeEncoder(
         TODO("Not yet implemented")
     }
 
-    override fun <T : Any> encodeNullableSerializableElement(descriptor: SerialDescriptor, index: Int, serializer: SerializationStrategy<T>, value: T?) {
+    override fun <T : Any> encodeNullableSerializableElement(
+        descriptor: SerialDescriptor,
+        index: Int,
+        serializer: SerializationStrategy<T>,
+        value: T?
+    ) {
         if (value != null) {
             encodeSerializableElement(descriptor, index, serializer, value)
         } else {
@@ -75,7 +80,12 @@ class ComplexTypeEncoder(
         }
     }
 
-    override fun <T> encodeSerializableElement(descriptor: SerialDescriptor, index: Int, serializer: SerializationStrategy<T>, value: T) {
+    override fun <T> encodeSerializableElement(
+        descriptor: SerialDescriptor,
+        index: Int,
+        serializer: SerializationStrategy<T>,
+        value: T
+    ) {
         ion.setFieldName(descriptor.getElementName(index))
         baseEncoder.encodeSerializableValue(serializer, value)
     }

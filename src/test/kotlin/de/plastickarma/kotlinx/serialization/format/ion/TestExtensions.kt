@@ -13,6 +13,7 @@ private fun String.flatten(): String {
     return this.trimIndent().replace("\n", "").replace("\\s".toRegex(), "")
 }
 
+@Suppress("SwallowedException")
 private fun String.isIonFormat(): Boolean {
     return try {
         IonTextWriterBuilder.standard().build(StringBuilder()).use { writer ->

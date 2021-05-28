@@ -2,6 +2,7 @@ package de.plastickarma.kotlinx.serialization.format.ion.data
 
 import kotlinx.serialization.Serializable
 
+@Suppress("LongParameterList")
 @Serializable
 class PrimitiveDataHolder(
     val str: String,

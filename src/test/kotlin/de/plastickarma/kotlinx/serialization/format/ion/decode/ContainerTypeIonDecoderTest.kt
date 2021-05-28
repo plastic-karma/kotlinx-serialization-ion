@@ -14,7 +14,8 @@ class ContainerTypeIonDecoderTest : FreeSpec({
     }
 
     "nested lists are deserialized" {
-        Ion.decodeFromString<List<List<Int>>>("[[1,2],[3,4],[5,6]]") shouldBe listOf(listOf(1, 2), listOf(3, 4), listOf(5, 6))
+        val decodeFromString = Ion.decodeFromString<List<List<Int>>>("[[1,2],[3,4],[5,6]]")
+        decodeFromString shouldBe listOf(listOf(1, 2), listOf(3, 4), listOf(5, 6))
     }
 
     "maps are deserialized" {
