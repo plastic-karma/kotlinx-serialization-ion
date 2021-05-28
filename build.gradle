@@ -1,11 +1,11 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.4.30'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.30'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.31'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.31'
     id "org.jlleitschuh.gradle.ktlint" version "10.0.0"
     id 'jacoco'
 }
 
-group 'org.example'
+group 'de.plastickarma.kotlinx.serialization.format.ion'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
     implementation "com.amazon.ion:ion-java:1.8.1"
     testImplementation "io.kotest:kotest-runner-junit5:4.4.3"
