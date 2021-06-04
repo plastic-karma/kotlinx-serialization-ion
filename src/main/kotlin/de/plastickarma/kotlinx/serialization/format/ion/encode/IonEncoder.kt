@@ -2,7 +2,6 @@ package de.plastickarma.kotlinx.serialization.format.ion.encode
 
 import com.amazon.ion.IonType
 import com.amazon.ion.IonWriter
-import com.amazon.ion.system.IonTextWriterBuilder
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.StructureKind
@@ -10,17 +9,12 @@ import kotlinx.serialization.encoding.AbstractEncoder
 import kotlinx.serialization.encoding.CompositeEncoder
 import kotlinx.serialization.modules.EmptySerializersModule
 import kotlinx.serialization.modules.SerializersModule
-import java.io.OutputStream
 
 /**
  * Main entry point for serialization to ION format.
  */
 @ExperimentalSerializationApi
-class IonEncoder(outputStream: OutputStream) : AbstractEncoder() {
-
-    private val ion: IonWriter = IonTextWriterBuilder
-        .standard()
-        .build(outputStream)
+class IonEncoder(private val ion: IonWriter) : AbstractEncoder() {
 
     override val serializersModule: SerializersModule = EmptySerializersModule
 

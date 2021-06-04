@@ -1,6 +1,6 @@
 package de.plastickarma.kotlinx.serialization.format.ion.decode
 
-import com.amazon.ion.system.IonSystemBuilder
+import com.amazon.ion.IonReader
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -14,9 +14,7 @@ import kotlinx.serialization.modules.SerializersModule
  * Main entry point for deserialization from ION format.
  */
 @ExperimentalSerializationApi
-class IonDecoder(value: String) : AbstractDecoder() {
-
-    private val ion = IonSystemBuilder.standard().build().newReader(value)
+class IonDecoder(private val ion: IonReader) : AbstractDecoder() {
 
     override val serializersModule: SerializersModule = EmptySerializersModule
 

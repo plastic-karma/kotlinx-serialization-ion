@@ -1,5 +1,8 @@
 package de.plastickarma.kotlinx.serialization.format.ion
 
+import com.amazon.ion.system.IonBinaryWriterBuilder
+import com.amazon.ion.system.IonSystemBuilder
+import com.amazon.ion.system.IonTextWriterBuilder
 import de.plastickarma.kotlinx.serialization.format.ion.decode.IonDecoder
 import de.plastickarma.kotlinx.serialization.format.ion.encode.IonEncoder
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -21,17 +24,43 @@ class Ion private constructor() {
         inline fun <reified T> encodeToString(value: T): String {
             val outputBuffer = ByteArrayOutputStream()
             BufferedOutputStream(outputBuffer).use {
-                val encoder = IonEncoder(it)
+                val encoder = IonEncoder(
+                    IonTextWriterBuilder
+                        .standard()
+                        .build(outputBuffer)
+                )
                 encoder.encodeSerializableValue(serializer(), value)
             }
             return outputBuffer.toString(Charsets.UTF_8.name())
         }
 
         /**
+         * Writes the given value into binary ION
+         */
+        inline fun <reified T> encodeToBytes(value: T): ByteArray {
+            val outputBuffer = ByteArrayOutputStream()
+            BufferedOutputStream(outputBuffer).use {
+                IonBinaryWriterBuilder.standard().build(it).use { ion ->
+                    IonEncoder(ion).encodeSerializableValue(serializer(), value)
+                }
+            }
+            return outputBuffer.toByteArray()
+        }
+
+        /**
+         * Reads the given ION string into a Kotlin object
+         */
+        inline fun <reified T> decodeFromBytes(value: ByteArray): T {
+            return IonSystemBuilder.standard().build().newReader(value).use { ion ->
+                IonDecoder(ion).decodeSerializableValue(serializer())
+            }
+        }
+
+        /**
          * Reads the given ION string into a Kotlin object
          */
         inline fun <reified T> decodeFromString(value: String): T {
-            val decoder = IonDecoder(value)
+            val decoder = IonDecoder(IonSystemBuilder.standard().build().newReader(value))
             return decoder.decodeSerializableValue(serializer())
         }
     }
