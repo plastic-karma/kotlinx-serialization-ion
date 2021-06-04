@@ -22,7 +22,7 @@ val myIon = """{ name : "Fritz, id: 42 }"""
 Ion.decodeFromString<DataHolder>(myIon) // == DataHolder(name = "Fritz, id = 42)
 ```
 
-#### Serialize to ION strings
+#### Serialize to binary ION
 ```kotlin
 data class DataHolder(val name: String, val id: Int)
 // ...
