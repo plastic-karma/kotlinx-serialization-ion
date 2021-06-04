@@ -1,11 +1,13 @@
-package de.plastickarma.kotlinx.serialization.format.ion
+package de.plastickarma.kotlinx.serialization.format.ion.encode
 
+import de.plastickarma.kotlinx.serialization.format.ion.Ion
 import de.plastickarma.kotlinx.serialization.format.ion.data.InlineElementHolder
 import de.plastickarma.kotlinx.serialization.format.ion.data.MyInt
 import de.plastickarma.kotlinx.serialization.format.ion.data.NestedDataHolder
 import de.plastickarma.kotlinx.serialization.format.ion.data.NestedDataHolderWithOptional
 import de.plastickarma.kotlinx.serialization.format.ion.data.PrimitiveDataHolder
 import de.plastickarma.kotlinx.serialization.format.ion.data.Status
+import de.plastickarma.kotlinx.serialization.format.ion.shouldBeIon
 import io.kotest.core.spec.style.FreeSpec
 import kotlinx.serialization.ExperimentalSerializationApi
 

@@ -1,5 +1,7 @@
-package de.plastickarma.kotlinx.serialization.format.ion
+package de.plastickarma.kotlinx.serialization.format.ion.encode
 
+import de.plastickarma.kotlinx.serialization.format.ion.Ion
+import de.plastickarma.kotlinx.serialization.format.ion.shouldBeIon
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.ExperimentalSerializationApi
