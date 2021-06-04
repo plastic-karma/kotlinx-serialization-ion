@@ -28,11 +28,11 @@ class IonDecoder(value: String) : AbstractDecoder() {
 
     override fun beginStructure(descriptor: SerialDescriptor): CompositeDecoder {
         return when (descriptor.kind) {
-            StructureKind.LIST -> {
+            StructureKind.LIST, StructureKind.CLASS -> {
                 ion.stepIn()
                 ContainerTypeDecoder(serializersModule, ion, this)
             }
-            StructureKind.MAP -> {
+            StructureKind.MAP, StructureKind.CLASS -> {
                 ion.stepIn()
                 MapIonDecoder(serializersModule, ion, this)
             }
@@ -70,6 +70,30 @@ class IonDecoder(value: String) : AbstractDecoder() {
 
     override fun decodeNull(): Nothing? {
         return null
+    }
+
+    override fun decodeChar(): Char {
+        return this.decodeString().single()
+    }
+
+    override fun decodeLong(): Long {
+        return ion.longValue()
+    }
+
+    override fun decodeShort(): Short {
+        return ion.intValue().toShort()
+    }
+
+    override fun decodeByte(): Byte {
+        return ion.intValue().toByte()
+    }
+
+    override fun decodeBoolean(): Boolean {
+        return ion.booleanValue()
+    }
+
+    override fun decodeEnum(enumDescriptor: SerialDescriptor): Int {
+        return enumDescriptor.getElementIndex(ion.stringValue())
     }
 
     override fun decodeNotNullMark(): Boolean {

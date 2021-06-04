@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Suppress("LongParameterList")
 @Serializable
-class PrimitiveDataHolder(
+data class PrimitiveDataHolder(
     val str: String,
     val c: Char,
     val i: Int,
