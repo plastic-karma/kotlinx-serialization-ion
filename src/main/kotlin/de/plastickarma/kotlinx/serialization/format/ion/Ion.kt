@@ -1,5 +1,6 @@
 package de.plastickarma.kotlinx.serialization.format.ion
 
+import com.amazon.ion.IonSystem
 import com.amazon.ion.system.IonBinaryWriterBuilder
 import com.amazon.ion.system.IonSystemBuilder
 import com.amazon.ion.system.IonTextWriterBuilder
@@ -50,8 +51,11 @@ class Ion private constructor() {
         /**
          * Reads the given ION string into a Kotlin object
          */
-        inline fun <reified T> decodeFromBytes(value: ByteArray): T {
-            return IonSystemBuilder.standard().build().newReader(value).use { ion ->
+        inline fun <reified T> decodeFromBytes(
+            value: ByteArray,
+            ionSystem: IonSystem = IonSystemBuilder.standard().build()
+        ): T {
+            return ionSystem.newReader(value).use { ion ->
                 IonDecoder(ion).decodeSerializableValue(serializer())
             }
         }
