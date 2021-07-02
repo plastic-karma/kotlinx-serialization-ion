@@ -11,14 +11,14 @@ Kotlin Serialization to and from [Amazon Ion](https://amzn.github.io/ion-docs/) 
 data class DataHolder(val name: String, val id: Int)
 // ...
 val myData = DataHolder(name = "Fritz", id = 42)
-Ion.encodeToString(myData) // == { name : "Fritz, id: 42 }
+Ion.encodeToString(myData) // == { name : "Fritz", id: 42 }
 ```
 
 #### Deserialize from ION strings
 ```kotlin
 data class DataHolder(val name: String, val id: Int)
 // ...
-val myIon = """{ name : "Fritz, id: 42 }"""
+val myIon = """{ name : "Fritz", id: 42 }"""
 Ion.decodeFromString<DataHolder>(myIon) // == DataHolder(name = "Fritz, id = 42)
 ```
 
@@ -35,5 +35,5 @@ Ion.encodeToBytes(myData) // == binary ION values
 data class DataHolder(val name: String, val id: Int)
 // ...
 val myIon: ByteArray = //... get bytes
-Ion.decodeFromBytes<DataHolder>(myIon) // == DataHolder(name = "Fritz, id = 42)
+Ion.decodeFromBytes<DataHolder>(myIon) // == DataHolder(name = "Fritz", id = 42)
 ```
