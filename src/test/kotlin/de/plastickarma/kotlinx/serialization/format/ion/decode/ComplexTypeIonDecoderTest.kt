@@ -155,4 +155,37 @@ class ComplexTypeIonDecoderTest : FreeSpec({
             """{ myInt:43,id:"hello"}"""
         ) shouldBe InlineElementHolder(MyInt(43), "hello")
     }
+
+    "ion strings with symbol tables are deserialized" {
+        Ion.decodeFromString<NestedDataHolderWithOptional>(
+            """
+        ${'$'}ion_1_0 
+        ${'$'}ion_symbol_table::
+            {
+              symbols:[ "primitiveDataHolder", "mapOfPrimitiveDataHolder", "status" ]
+            }
+        {
+            ${'$'}10:null,
+            listOfPrimitiveDataHolder:[
+                null,
+                {str:"Hello1",c:"c",i:1,l:100000000001,f:1234.510009765625e0,
+                d:-0.12312313e0,s:12,b:100,bl:true,${'$'}12:"UPDATED"},
+                null
+            ],
+            ${'$'}11:null
+        }
+        """
+        ) shouldBe NestedDataHolderWithOptional(
+            primitiveDataHolder = null,
+            listOfPrimitiveDataHolder = listOf(
+                null,
+                PrimitiveDataHolder(
+                    str = "Hello1", 'c', 1, 100000000001, 1234.51f,
+                    -0.12312313, 12, 100, true, status = Status.UPDATED
+                ),
+                null
+            ),
+            mapOfPrimitiveDataHolder = null
+        )
+    }
 })
