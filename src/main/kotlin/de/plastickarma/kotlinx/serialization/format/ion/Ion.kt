@@ -39,10 +39,13 @@ class Ion private constructor() {
         /**
          * Writes the given value into binary ION
          */
-        inline fun <reified T> encodeToBytes(value: T): ByteArray {
+        inline fun <reified T> encodeToBytes(
+            value: T,
+            ionBinaryWriterBuilder: IonBinaryWriterBuilder = IonBinaryWriterBuilder.standard()
+        ): ByteArray {
             val outputBuffer = ByteArrayOutputStream()
             BufferedOutputStream(outputBuffer).use {
-                IonBinaryWriterBuilder.standard().build(it).use { ion ->
+                ionBinaryWriterBuilder.build(it).use { ion ->
                     IonEncoder(ion).encodeSerializableValue(serializer(), value)
                 }
             }
