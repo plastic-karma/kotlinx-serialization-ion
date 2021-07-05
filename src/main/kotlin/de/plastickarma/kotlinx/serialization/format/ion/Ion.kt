@@ -22,13 +22,14 @@ class Ion private constructor() {
         /**
          * Writes the given value into an ION string.
          */
-        inline fun <reified T> encodeToString(value: T): String {
+        inline fun <reified T> encodeToString(
+            value: T,
+            ionTextWriterBuilder: IonTextWriterBuilder = IonTextWriterBuilder.standard()
+        ): String {
             val outputBuffer = ByteArrayOutputStream()
             BufferedOutputStream(outputBuffer).use {
                 val encoder = IonEncoder(
-                    IonTextWriterBuilder
-                        .standard()
-                        .build(outputBuffer)
+                    ionTextWriterBuilder.build(outputBuffer)
                 )
                 encoder.encodeSerializableValue(serializer(), value)
             }
