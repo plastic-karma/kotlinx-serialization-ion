@@ -4,7 +4,6 @@ jdk:
   - oraclejdk11
 stages:
   - name: build
-if: branch = mainline AND type != pull_request
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
