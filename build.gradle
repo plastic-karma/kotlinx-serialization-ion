@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.31'
     id "org.jlleitschuh.gradle.ktlint" version "10.2.0"
     id "io.gitlab.arturbosch.detekt" version "1.18.1"
-    id 'jacoco'
+    id 'kotlinx-kover' version '0.3.0'
 }
 
 group 'de.plastickarma.kotlinx.serialization.format.ion'
@@ -21,47 +21,28 @@ dependencies {
     testImplementation "io.kotest:kotest-assertions-core:4.6.3"
 }
 
-test {
-    useJUnitPlatform()
-    finalizedBy jacocoTestReport
-}
-
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 
-jacocoTestReport {
-    dependsOn test
-}
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                counter = 'LINE'
-                minimum = 0.8
-            }
-            limit {
-                counter = 'BRANCH'
-                minimum = 0.8
-            }
-            limit {
-                counter = 'COMPLEXITY'
-                minimum = 0.8
-            }
-        }
-    }
-}
-check.dependsOn jacocoTestCoverageVerification
 
 detekt {
     config = files("detekt.yml")
     buildUponDefaultConfig = true
 }
 
-jacoco {
-    toolVersion = "0.8.7"
+test {
+    useJUnitPlatform()
+    kover {
+        generateXml = true
+        generateHtml = true
+        xmlReportFile.set(file("$buildDir/reports/coverage/report.xml"))
+        htmlReportDir.set(file("$buildDir/reports/coverage/html"))
+        includes = ['de\\.plastickarma\\.kotlinx\\.serialization\\..*']
+    }
 }
+assemble.dependsOn check
+assemble.dependsOn test
