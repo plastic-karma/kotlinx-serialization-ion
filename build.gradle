@@ -42,6 +42,11 @@ test {
         xmlReportFile.set(file("$buildDir/reports/coverage/report.xml"))
         htmlReportDir.set(file("$buildDir/reports/coverage/html"))
         includes = ['de\\.plastickarma\\.kotlinx\\.serialization\\..*']
+        verificationRule {
+            name = "Minimal line coverage rate in percents"
+            minValue = 95
+            valueType = 'COVERED_LINES_PERCENTAGE'
+        }
     }
 }
 assemble.dependsOn check
